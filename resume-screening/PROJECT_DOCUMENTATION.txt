@@ -1,0 +1,346 @@
+// Zip extract kri khali....
+
+python -m pip install streamlit pdfplumber scikit-learn
+python -m pip install sentence-transformers
+
+----or-------
+
+pip install streamlit pdfplumber scikit-learn
+pip install sentence-transformers
+
+// Ammathi taare je haale ee, taare kaik error aavti ti last time etle 2 ways kidhaa chhe...
+
+// And bass ptchi run krvanu..
+
+Option 1 (recommended, most reliable): - python -m streamlit run app.py
+Option 2: - streamlit run app.py
+
+// Ane bass , Hr na page mathi "Title & Exp.. & Desc & Skills " nakhi create-JOB
+
+// ptchi direct sidebar mathi - apply for job ma vai javanu .. Ka to oli link mdi hse ee url ma paste kriney eej screen khulse
+ema net mathi example "teacher resume pdf" download kri paste kri devanu
+
+// ptchi last page ma analyticss and puru.. (Aa maru lahkelu java dehje ptchi 😂)
+--------------------------------------------------
+
+
+SmartHire AI - Complete Project Documentation
+Project made by Anjali Jivani 
+
+======================================================================
+Why we used Streamlit (for ML/DL projects)
+======================================================================
+This project is built with Streamlit.
+
+Why Streamlit is commonly used in ML/DL projects:
+- It is very fast to convert ML code into a working web app.
+- It needs less frontend coding (no separate HTML/CSS/JS setup required).
+- It is simple for model demos, prototypes, and academic projects.
+- It supports quick interaction with inputs, file upload, and live results.
+- It is ideal when focus is on ML logic + workflow, not heavy web development.
+
+In this project, Streamlit helps us quickly build a hiring assistant interface
+on top of resume-screening AI logic.
+
+======================================================================
+1) Project Overview (Simple Explanation)
+======================================================================
+SmartHire AI is an AI-powered hiring assistant built using Streamlit.
+
+This project helps HR/recruiters move from manual resume reading to a
+guided hiring workflow:
+
+1. Create a job opening
+2. Share an application link
+3. Receive candidate resumes
+4. Use AI score + skill analysis
+5. Take hiring decisions (Shortlist/Reject)
+
+So this is not only a resume viewer. It is a complete decision-support
+tool for early-stage hiring.
+
+
+======================================================================
+2) Why this project was made
+======================================================================
+In many hiring processes:
+- HR receives many resumes
+- Screening takes a lot of time
+- Decisions are inconsistent
+
+SmartHire AI solves this by:
+- Ranking candidates automatically
+- Showing skill gaps clearly
+- Recommending top candidate
+- Giving a decision panel for shortlist/reject actions
+
+
+======================================================================
+3) Who can use it
+======================================================================
+- HR teams
+- Recruiters
+- Team leads doing initial candidate screening
+- Students/demo users learning AI + Streamlit workflow apps
+
+
+======================================================================
+4) End-to-End Workflow (What happens in the app)
+======================================================================
+Step 1/4: Create Job
+- Enter Job Title, Description, Required Skills, Experience.
+- App generates unique job_id (UUID).
+- App generates application link:
+  http://localhost:8501/?job_id=<job_id>
+- Next action: Share this link with candidates.
+
+Step 2/4: Receive Applications
+- Candidate opens the shared link.
+- Candidate fills Name + Email and uploads PDF resume.
+- App extracts resume text using pdfplumber.
+- App computes matching score (TF-IDF or optional BERT).
+- App stores candidate profile under that job.
+
+Step 3/4: AI Analysis
+- Dashboard shows Hiring Insights:
+  - Total candidates
+  - Average score
+  - Top score
+  - Shortlisted count
+- App auto-picks AI Recommended Candidate (highest score).
+- App shows matched skills and missing skills.
+
+Step 4/4: Hiring Decision
+- HR reviews candidate cards.
+- HR sets candidate status:
+  - Pending
+  - Shortlisted
+  - Rejected
+- Status updates are stored in JSON immediately.
+
+
+======================================================================
+5) Core Product Features
+======================================================================
+- Workflow-based navigation (Create -> Apply -> Review)
+- Deep-linked apply page through job_id query param
+- Resume PDF text extraction
+- AI similarity scoring
+- Optional BERT-based semantic scoring
+- Candidate ranking and filtering
+- AI recommendation block
+- Skill gap analysis
+- Decision system with persistent statuses
+- Shortlisted candidates section
+- Hiring insights panel
+
+
+======================================================================
+6) Technology Stack
+======================================================================
+Frontend / App Framework:
+- Streamlit
+
+Programming Language:
+- Python
+
+NLP / AI:
+- scikit-learn
+  - TfidfVectorizer
+  - cosine_similarity
+- sentence-transformers (optional)
+  - all-MiniLM-L6-v2
+
+Document Processing:
+- pdfplumber (for PDF resume text extraction)
+
+Storage:
+- JSON file storage (`data_store.json`)
+- In-memory dictionaries during runtime
+
+Utilities:
+- uuid (for unique job IDs)
+- pathlib, io, re, typing
+
+
+======================================================================
+7) Project Structure
+======================================================================
+- app.py
+  Main application file containing:
+  - data handling
+  - NLP scoring
+  - workflow pages
+  - decision UI logic
+
+- data_store.json
+  Local persistent storage for jobs and candidates
+
+- PROJECT_DOCUMENTATION.txt
+  This complete explanation file
+
+
+======================================================================
+8) Data Model (Stored Structure)
+======================================================================
+Job object:
+{
+  "job_id": str,
+  "title": str,
+  "description": str,
+  "skills": [str],
+  "experience": int,
+  "candidates": [Candidate]
+}
+
+Candidate object:
+{
+  "name": str,
+  "email": str,
+  "resume_text": str,
+  "score": float,                     # 0-100
+  "matched_skills": [str],
+  "missing_skills": [str],
+  "scoring_method": "TF-IDF" | "BERT (all-MiniLM-L6-v2)",
+  "status": "Pending" | "Shortlisted" | "Rejected"
+}
+
+
+======================================================================
+9) How AI Scoring Works
+======================================================================
+Default Method: TF-IDF
+1. Convert job description and resume text to TF-IDF vectors
+2. Compute cosine similarity
+3. Convert similarity to percentage score (0-100)
+
+Optional Method: BERT
+1. Generate sentence embeddings using all-MiniLM-L6-v2
+2. Compute cosine similarity between embeddings
+3. Convert similarity to percentage score (0-100)
+
+Note:
+- If BERT package is not installed, app can still run with TF-IDF.
+
+
+======================================================================
+10) How Skill Gap Detection Works
+======================================================================
+1. Normalize required skills to lowercase
+2. Normalize resume text
+3. If required skill keyword appears in resume -> Matched
+4. Otherwise -> Missing
+
+Outputs shown for each candidate:
+- Matched Skills
+- Missing Skills
+
+
+======================================================================
+11) Installation Guide (Beginner Friendly)
+======================================================================
+Open terminal in project folder.
+
+A) (Recommended) Create virtual environment
+Windows PowerShell:
+1. python -m venv .venv
+2. .\.venv\Scripts\Activate.ps1
+
+B) Upgrade pip (optional but recommended)
+- python -m pip install --upgrade pip
+
+C) Install required packages
+Preferred:
+- python -m pip install streamlit pdfplumber scikit-learn
+
+Optional (BERT mode):
+- python -m pip install sentence-transformers
+
+Alternative (if above command works on your system):
+- pip install streamlit pdfplumber scikit-learn
+- pip install sentence-transformers
+
+
+======================================================================
+12) How to Run the App
+======================================================================
+From the project root, you can run either command:
+
+Option 1 (recommended, most reliable):
+- python -m streamlit run app.py
+
+Option 2:
+- streamlit run app.py
+
+App URL:
+- http://localhost:8501
+
+
+======================================================================
+13) If command doesn't work (Troubleshooting)
+======================================================================
+Issue A: 'pip' not recognized
+Use:
+- python -m pip install streamlit pdfplumber scikit-learn
+
+Issue B: 'streamlit' not recognized
+Use:
+- python -m streamlit run app.py
+
+Issue C: Wrong Python environment
+- Activate your virtual environment again
+- Reinstall dependencies inside that environment
+
+Issue D: BERT import error
+- Install optional dependency:
+  python -m pip install sentence-transformers
+- Or switch scoring method to TF-IDF
+
+Issue E: Permission error in PowerShell
+- Run terminal as administrator, or use:
+  Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass
+  (temporary for current terminal only)
+
+
+======================================================================
+14) Quick Demo Flow (For Explanation/Presentation)
+======================================================================
+1. Run app: python -m streamlit run app.py
+2. Create a job in "Create Job"
+3. Copy generated link and open it in another tab
+4. Submit candidate resume from "Apply for Job"
+5. Open "View Candidates"
+6. Explain AI recommendation + insights
+7. Shortlist one candidate and reject one
+8. Show shortlist section as final output
+
+
+======================================================================
+15) Product Behaviors Implemented
+======================================================================
+- Deep link opens apply workflow using job_id
+- AI-based candidate recommendation
+- Decision system with persistent statuses
+- Real-time shortlist section
+- Insights for hiring decisions
+- Card-first candidate review experience
+
+
+======================================================================
+16) Current Limitations
+======================================================================
+- No database (JSON only, as per requirement)
+- Skill matching is keyword based (not synonym aware)
+- Localhost links are for local machine usage
+- BERT load can take extra time on first use
+
+
+======================================================================
+17) Future Enhancement Ideas
+======================================================================
+- Multi-user login and role-based access
+- Recruiter notes and interview scheduling
+- Resume parser enhancements (entity extraction)
+- Better explainable AI scoring
+- Export reports (CSV/PDF)
+- Cloud deployment and public application links
