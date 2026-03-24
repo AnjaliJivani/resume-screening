@@ -244,9 +244,10 @@ def set_query_param(name: str, value: str) -> None:
 
 
 def build_application_link(job_id: str) -> str:
-    """Build a shareable application link."""
-    return f"http://localhost:8501/?job_id={job_id}"
-
+    base_url = st.secrets.get("APP_BASE_URL", "")
+    if base_url:
+        return f"{base_url}/?job_id={job_id}"
+    return f"/?job_id={job_id}"   # fallback
 
 # -------------------------
 # Page 1: Create Job
